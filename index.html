@@ -1,0 +1,42 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Save Data Form</title>
+</head>
+<body>
+    <h1>Save Data</h1>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            const response = await fetch('/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+
+            if (response.ok) {
+                alert('Data saved successfully!');
+            } else {
+                alert('Failed to save data.');
+            }
+        });
+    </script>
+</body>
+</html>
